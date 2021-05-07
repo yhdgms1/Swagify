@@ -1,7 +1,16 @@
-const UPPERCASE_CHANCE = 0.5;
-const LETTER_REPLACE_CHANCE = 0.8;
-const TRIPLE_CHANCE = 0.1;
-const MAX_TAGS = 4;
+interface Config {
+  upperCaseChance?: number;
+  letterReplaceChance?: number;
+  tripleChance?: number;
+  maxTags?: number;
+}
+
+const defaults = {
+  upperCaseChance: 0.5,
+  letterReplaceChance: 0.8,
+  tripleChance: 0.1,
+  maxTags: 3,
+};
 
 const letter_replacements: { [index: string]: string } = {
   S: "$",
@@ -104,8 +113,8 @@ const decorate = (string: string): string => {
   return decoration + string + decoration.split("").reverse().join("");
 };
 
-const add_tags = (string: string): string => {
-  const numtags = Math.floor(Math.random() * MAX_TAGS);
+const add_tags = (string: string, maxTags: number): string => {
+  const numtags = Math.floor(Math.random() * maxTags);
 
   for (let i = 0; i < numtags; i += 1) {
     string = "[" + random_choice(tags) + "]" + string;
@@ -114,26 +123,29 @@ const add_tags = (string: string): string => {
   return string;
 };
 
-const randomise_case = (letter: string): string => {
-  return Math.random() < UPPERCASE_CHANCE
+const randomise_case = (letter: string, upperCaseChance: number): string => {
+  return Math.random() < upperCaseChance
     ? letter.toUpperCase()
     : letter.toLowerCase();
 };
 
-export function swagify(string: string): string {
+export function swagify(string: string, options?: Config): string {
+  const { upperCaseChance, letterReplaceChance, tripleChance, maxTags } =
+    options = { ...defaults, ...options };
+
   let letters = string.split("");
 
   for (let i in letters) {
-    if (Math.random() < LETTER_REPLACE_CHANCE) {
+    if (Math.random() < letterReplaceChance) {
       let replacement: unknown = letter_replacements[letters[i]];
       if (replacement) {
         letters[i] = letter_replacements[letters[i]];
       }
     }
-    letters[i] = randomise_case(letters[i]);
+    letters[i] = randomise_case(letters[i], upperCaseChance);
   }
 
-  if (Math.random() < TRIPLE_CHANCE) {
+  if (Math.random() < tripleChance) {
     const triple_index = Math.floor(Math.random() * letters.length);
 
     let letter = letters[triple_index];
@@ -144,7 +156,7 @@ export function swagify(string: string): string {
   string = letters.join("");
 
   string = decorate(string);
-  string = add_tags(string);
+  string = add_tags(string, maxTags);
 
   string = string.replace("le", "[le]");
 
