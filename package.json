@@ -1,5 +1,5 @@
 {
-  "name": "swagify",
+  "name": "@artemis69/swagify",
   "version": "1.0.0",
   "description": "Swagify any sentence or word and then swag all day",
   "main": "./node/index.cjs.js",
