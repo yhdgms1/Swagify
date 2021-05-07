@@ -12,3 +12,15 @@ import { swagify } from 'https://deno.land/x/swagify/mod.ts'
 
 console.log(swagify('Username to swagify'))
 ````
+
+## Node
+
+```bash
+npm i @artemis69/swagify
+```
+
+````ts
+import { swagify } from '@artemis69/swagify'
+
+console.log(swagify('Username to swagify'))
+````

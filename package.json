@@ -1,0 +1,16 @@
+{
+  "name": "swagify",
+  "version": "1.0.0",
+  "description": "Swagify any sentence or word and then swag all day",
+  "main": "./node/index.cjs.js",
+  "module": "./node/index.js",
+  "repository": "https://github.com/Artemis69/Swagify.git",
+  "author": "Artemis69 <shuckinart@yandex.ru>",
+  "license": "MIT",
+  "files": [
+    "node/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
