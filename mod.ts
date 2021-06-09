@@ -12,7 +12,7 @@ const defaults = {
   maxTags: 3,
 };
 
-const letter_replacements: { [index: string]: string } = {
+const letterReplacements: { [index: string]: string } = {
   S: "$",
   A: "4",
   a: "@",
@@ -32,7 +32,7 @@ const letter_replacements: { [index: string]: string } = {
   D: "|)",
 };
 
-const decorations: Array<string> = [
+const decorations: string[] = [
   "x",
   "X",
   "xX",
@@ -57,7 +57,7 @@ const decorations: Array<string> = [
   "*--",
 ];
 
-const tags: Array<string> = [
+const tags: string[] = [
   "SHOTS FIRED",
   "420",
   "LEGIT",
@@ -104,61 +104,61 @@ const tags: Array<string> = [
   "#nofilter",
 ];
 
-const random_choice = (list: Array<string>): string => {
+const randomChoice = (list: string[]): string => {
   return list[Math.floor(Math.random() * list.length)];
 };
 
 const decorate = (string: string): string => {
-  const decoration = random_choice(decorations);
+  const decoration = randomChoice(decorations);
   return decoration + string + decoration.split("").reverse().join("");
 };
 
-const add_tags = (string: string, maxTags: number): string => {
+const addTags = (string: string, maxTags: number): string => {
   const numtags = Math.floor(Math.random() * maxTags);
 
   for (let i = 0; i < numtags; i += 1) {
-    string = "[" + random_choice(tags) + "]" + string;
+    string = "[" + randomChoice(tags) + "]" + string;
   }
 
   return string;
 };
 
-const randomise_case = (letter: string, upperCaseChance: number): string => {
+const randomiseCase = (letter: string, upperCaseChance: number): string => {
   return Math.random() < upperCaseChance
     ? letter.toUpperCase()
     : letter.toLowerCase();
 };
 
 export function swagify(string: string, options?: Config): string {
-  const { upperCaseChance, letterReplaceChance, tripleChance, maxTags } =
-    options = { ...defaults, ...options };
+  const { upperCaseChance, letterReplaceChance, tripleChance, maxTags } = {
+    ...defaults,
+    ...options,
+  };
 
-  let letters = string.split("");
+  const letters = string.split("");
 
-  for (let i in letters) {
+  for (const i in letters) {
     if (Math.random() < letterReplaceChance) {
-      let replacement: unknown = letter_replacements[letters[i]];
+      const replacement = letterReplacements[letters[i]];
       if (replacement) {
-        letters[i] = letter_replacements[letters[i]];
+        letters[i] = letterReplacements[letters[i]];
       }
     }
-    letters[i] = randomise_case(letters[i], upperCaseChance);
+    letters[i] = randomiseCase(letters[i], upperCaseChance);
   }
 
   if (Math.random() < tripleChance) {
-    const triple_index = Math.floor(Math.random() * letters.length);
+    const tripleIndex = Math.floor(Math.random() * letters.length);
 
-    let letter = letters[triple_index];
+    const letter = letters[tripleIndex];
 
-    letters[triple_index] = letter.repeat(3);
+    letters[tripleIndex] = letter.repeat(3);
   }
 
   string = letters.join("");
 
   string = decorate(string);
-  string = add_tags(string, maxTags);
-
-  string = string.replace("le", "[le]");
+  string = addTags(string, maxTags);
 
   return string;
 }

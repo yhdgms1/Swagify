@@ -1,6 +1,6 @@
 {
   "name": "@artemis69/swagify",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Swagify any sentence or word and then swag all day",
   "main": "./dist/mod.js",
   "module": "./dist/mod.mjs",
@@ -15,10 +15,10 @@
     "access": "public"
   },
   "devDependencies": {
-    "tsup": "^4.10.1",
-    "typescript": "^4.2.4"
+    "tsup": "^4.11.2",
+    "typescript": "^4.3.2"
   },
   "scripts": {
-    "generate": "tsup mod.ts --dts --format esm,cjs --minify"
+    "build": "tsup mod.ts --dts --format esm,cjs --target es2018 --minify"
   }
 }
