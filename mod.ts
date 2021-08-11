@@ -32,7 +32,7 @@ const letterReplacements: { [index: string]: string } = {
   D: "|)",
 };
 
-const decorations: string[] = [
+const decorations = [
   "x",
   "X",
   "xX",
@@ -57,7 +57,7 @@ const decorations: string[] = [
   "*--",
 ];
 
-const tags: string[] = [
+const tags = [
   "SHOTS FIRED",
   "420",
   "LEGIT",
@@ -108,32 +108,19 @@ const randomChoice = (list: string[]): string => {
   return list[Math.floor(Math.random() * list.length)];
 };
 
-const decorate = (string: string): string => {
-  const decoration = randomChoice(decorations);
-  return decoration + string + decoration.split("").reverse().join("");
-};
-
-const addTags = (string: string, maxTags: number): string => {
-  const numtags = Math.floor(Math.random() * maxTags);
-
-  for (let i = 0; i < numtags; i += 1) {
-    string = "[" + randomChoice(tags) + "]" + string;
-  }
-
-  return string;
-};
-
 const randomiseCase = (letter: string, upperCaseChance: number): string => {
   return Math.random() < upperCaseChance
     ? letter.toUpperCase()
     : letter.toLowerCase();
 };
 
-export function swagify(string: string, options?: Config): string {
+export function swagify(string: string, options?: Config) {
   const { upperCaseChance, letterReplaceChance, tripleChance, maxTags } = {
     ...defaults,
     ...options,
   };
+
+  if(!string) string = ''
 
   const letters = string.split("");
 
@@ -152,13 +139,23 @@ export function swagify(string: string, options?: Config): string {
 
     const letter = letters[tripleIndex];
 
-    letters[tripleIndex] = letter.repeat(3);
+    if (letter) {
+      letters[tripleIndex] = letter.repeat(3);
+    }
   }
 
   string = letters.join("");
 
-  string = decorate(string);
-  string = addTags(string, maxTags);
+  // decorate
+  const decoration = randomChoice(decorations);
+  string = decoration + string + decoration.split("").reverse().join("");
+
+  // add tags
+  const tagsCount = Math.floor(Math.random() * maxTags);
+
+  for (let i = 0; i < tagsCount; i++) {
+    string = "[" + randomChoice(tags) + "]" + string;
+  }
 
   return string;
 }
